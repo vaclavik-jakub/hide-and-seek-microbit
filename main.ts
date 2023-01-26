@@ -1,20 +1,16 @@
-basic.forever(function() {
-let temperatureData = 0
-let lightData = 0
-let Label = ""
-radio.setGroup(1)
+const mySerial = Utility.encodeSerial(control.deviceSerialNumber())
 
-    input.onButtonPressed(Button.A, function () {
-        temperatureData = input.temperature()
-        lightData = input.lightLevel()
-        radio.sendValue("vaclavik", temperatureData)
-        radio.sendValue("Gk082lje", lightData)
-    })
+radio.setGroup(5)
+radio.setTransmitSerialNumber(true)
+radio.sendNumber(12)
 
-    radio.onReceivedValue(function (vaclavik, Gk082lje) {
-        Label = vaclavik
-        serial.writeValue(Label, Gk082lje)
-        
-    })
-   
+radio.onReceivedNumber(function (receivedNumber: number) {
+    console.log(receivedNumber)
+    basic.showNumber(receivedNumber)
 })
+
+input.onButtonPressed(Button.A, function () {
+    radio.sendNumber()
+    console.log()
+})
+
